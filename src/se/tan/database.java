@@ -15,6 +15,7 @@ public class database {
         for (Element link : links) {
             System.out.println("\nlink : " + link.attr("href"));
             System.out.println("text : " + link.text());
+            System.console();
         }
     }
 }
