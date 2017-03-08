@@ -46,9 +46,9 @@ public class BasicCrawler {
         new BasicCrawler().getPageLinks("https://www.bagas31.com/2017/03/spotify-music-mod-premium-v7-7-for-android.html");
         new BasicCrawler().getPageLinks("https://www.bagas31.com/2017/03/spotify-music-mod-premium-v7-7-for-android.html");
         new BasicCrawler().getPageLinks("https://www.bagas31.com/2017/03/spotify-music-mod-premium-v7-7-for-android.html");
+        new BasicCrawler().getPageLinks("https://www.bagas31.com/2017/03/spotify-music-mod-premium-v7-7-for-android.html");
 
 
-        // akubusuk
     }
 
 }
