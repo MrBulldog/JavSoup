@@ -7,40 +7,70 @@ import java.sql.*;
  */
 
 public class database {
+    // JDBC driver name and database URL
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://192.168.12.11/java";
+
+    //  Database credentials
+    static final String USER = "root";
+    static final String PASS = "rahasia2016";
+
     public static void main(String[] args) {
-        try (
-                // Step 1: Allocate a database 'Connection' object
-                Connection conn = DriverManager.getConnection(
-                        "jdbc:mysql://http://192.168.12.11/java", "root", "rahasia2016");
-                // MySQL: "jdbc:mysql://hostname:port/databaseName", "username", "password"
+        Connection conn = null;
+        Statement stmt = null;
+        try{
+            //STEP 2: Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
 
-                // Step 2: Allocate a 'Statement' object in the Connection
-                Statement stmt = conn.createStatement();
-        ) {
-            // Step 3: Execute a SQL SELECT query, the query result
-            //  is returned in a 'ResultSet' object.
-            String strSelect = "select title, price, qty from books";
-            System.out.println("The SQL query is: " + strSelect); // Echo For debugging
-            System.out.println();
+            //STEP 3: Open a connection
+            System.out.println("Connecting to database...");
+            conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
-            ResultSet rset = stmt.executeQuery(strSelect);
+            //STEP 4: Execute a query
+            System.out.println("Creating statement...");
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT id, first, last, age FROM Employees";
+            ResultSet rs = stmt.executeQuery(sql);
 
-            // Step 4: Process the ResultSet by scrolling the cursor forward via next().
-            //  For each row, retrieve the contents of the cells with getXxx(columnName).
-            System.out.println("The records selected are:");
-            int rowCount = 0;
-            while(rset.next()) {   // Move the cursor to the next row, return false if no more row
-                String title = rset.getString("title");
-                double price = rset.getDouble("price");
-                int    qty   = rset.getInt("qty");
-                System.out.println(title + ", " + price + ", " + qty);
-                ++rowCount;
+            //STEP 5: Extract data from result set
+            while(rs.next()){
+                //Retrieve by column name
+                int id  = rs.getInt("id");
+                int age = rs.getInt("age");
+                String first = rs.getString("first");
+                String last = rs.getString("last");
+
+                //Display values
+                System.out.print("ID: " + id);
+                System.out.print(", Age: " + age);
+                System.out.print(", First: " + first);
+                System.out.println(", Last: " + last);
             }
-            System.out.println("Total number of records = " + rowCount);
-
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        }
-        // Step 5: Close the resources - Done automatically by try-with-resources
-    }
-}
+            //STEP 6: Clean-up environment
+            rs.close();
+            stmt.close();
+            conn.close();
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        }finally{
+            //finally block used to close resources
+            try{
+                if(stmt!=null)
+                    stmt.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end finally try
+        }//end try
+        System.out.println("Goodbye!");
+    }//end main
+}//end FirstExample
