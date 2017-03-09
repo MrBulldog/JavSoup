@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class SiblingJsoup {
+public class crawler {
 
     public static void main(String[] args) {
         try {
